@@ -190,11 +190,11 @@ this.store.query("employee",{house:e.get("session.data.authenticated.house"),rol
 this.store.query("penalty-on-shift",{employee:e,workshift:t}).then((function(e){n.set("modelEmployeePenalty",e)}))},employeeList:void 0,actions:{addEmployeeOpenModal(){this.set("modalEmployeeStatus",!0)},saveEmployees(){let e=this,t=this.employeeList.filter((e=>e.get("colorSelect"))).length+this.model.get("employeeOnWorkshift").filter((e=>e.get("colorSelect"))).length,n=0
 this.employeeList.forEach((t=>{if(t.get("colorSelect")){t.set("colorSelect",!1),e.store.createRecord("employeeOnWorkshift",{token:0,workshift:e.model,roomOnWorkshift:e.getCurrentRoomOnWorkshift(),employee:t}).save().then((function(){M.toast({html:t.get("fio")+" добавлен(а)"})})),n++}})),this.model.get("employeeOnWorkshift").forEach((e=>{e.get("colorSelect")&&(e.deleteRecord(),e.save().catch((e=>{})),n++)})),t==n&&(e.model.reload(),e.set("modalEmployeeStatus",!1))},employeeTRClick(e){this.employeeList.forEach((t=>{t.id==e&&t.set("colorSelect",Ember.isEmpty(t.get("colorSelect"))||!t.get("colorSelect"))}))},employeeWorkshiftTRClick(e){this.model.employeeOnWorkshift.forEach((t=>{t.id==e&&t.set("colorSelect",Ember.isEmpty(t.get("colorSelect"))||!t.get("colorSelect"))}))},closedWorkshift(){let e=this
 return Ember.getOwner(this).lookup("controller:application").confirm("Закрыть текущую смену?","Это действие необратимо. Будет проставлено время закрытия смены. Данные о токенах и сотрудниках больше нельзя будет изменить. Продолжить?",(function(){let t=e.get("model.roomOnWorkshift").length,n=0
-e.get("model.roomOnWorkshift").forEach((o=>{let l=o.get("token"),i=0,a=Ember.A()
+e.get("model.roomOnWorkshift").forEach((o=>{let l=Number(o.get("token")),i=0,a=Ember.A()
 o.get("employeeOnWorkshift").forEach((e=>{let t=e.get("token")
 if(Ember.isEmpty(t)||0==t)a.push(e)
-else{if(l<t)return M.toast({html:"У сотрудника больше токенов, чем в общем у смены"})
-l-=t}}))
+else{if(Number(l)<Number(t))return M.toast({html:"У сотрудника больше токенов, чем в общем у смены"})
+l-=Number(t)}}))
 let s=0
 if(n++,0!=a.length){let o=a.length
 s=l/a.length,a.forEach((l=>{l.set("token",Math.floor(s)),l.save().finally((function(){if(i++,i==o&&t==n){let t=new r.default
