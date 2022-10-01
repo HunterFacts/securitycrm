@@ -331,9 +331,11 @@ e.default=o})),define("sbilling-front/routes/application",["exports","@ember/rou
 var r=t.default.extend(n.default,{sessionAuthenticated(){M.toast({html:"Авторизация успешна"})},actions:{willTransition:function(e){let t=this.controller
 t.set("sidenavTrigger",!t.get("sidenavTrigger"))}}})
 e.default=r})),define("sbilling-front/routes/base-route",["exports","@ember/routing/route","@ember/service","sbilling-front/mixins/roles"],(function(e,t,n,r){Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0
-var o=t.default.extend(r.default,{session:(0,n.inject)(),routeTitle:null,beforeModel(e){this.session.requireAuthentication(e,"login")},reload:function(){this.refresh()},setupController:function(e,t){this._super(...arguments)
+var o=t.default.extend(r.default,{session:(0,n.inject)(),routeTitle:null,beforeModel(e){this.session.requireAuthentication(e,"login")},reload:function(){this.refresh()},afterModel(e){this._super(...arguments),Ember.getOwner(this).lookup("controller:application").preloaderStop()},setupController:function(e,t){this._super(...arguments)
 let n=Ember.getOwner(this).lookup("controller:application")
-n.preloaderStop(),n.set("routeTitle",this.routeTitle)},actions:{willTransition(e){Ember.getOwner(this).lookup("controller:application").preloaderStart()}}})
+n.set("routeTitle",this.routeTitle)},actions:{willTransition(e){this._super(...arguments)
+let t=Ember.getOwner(this).lookup("controller:application")
+t.set("sidenavTrigger",!t.get("sidenavTrigger")),t.preloaderStart()}}})
 e.default=o})),define("sbilling-front/routes/chart-all",["exports","sbilling-front/routes/base-route","@ember/service","sbilling-front/config/environment","moment"],(function(e,t,n,r,o){Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0
 var l=t.default.extend({routeTitle:"Доход по компании",router:(0,n.inject)(),beforeModel(e){},model(){var e=(new o.default).subtract(7,"days"),t=(new o.default).add(7,"days")
 return Ember.$.ajax({url:r.default.APP.host+"/api/Analytics/incomeByRange",type:"GET",headers:{Authorization:"Bearer "+this.get("session.data.authenticated.access_token")},data:{workplace:this.get("session.data.authenticated.workplace"),DateStart:e.format("DD.MM.YYYY"),DateEnd:t.format("DD.MM.YYYY")},contentType:"application/json",error:function(e,t,n){console.error(n)}})},setupController:function(e,t){var n=(new o.default).subtract(7,"days"),r=(new o.default).add(7,"days")
