@@ -79,7 +79,7 @@ case 10:r.evening.data=e,r.evening.isEmpty=!1
 break
 case 17:r.night.data=e,r.night.isEmpty=!1}})),l.push(r),a.add(1,"days")}this.set("filterData",l)},actions:{addNewRow(e,t){if(this.roleOnlyAdministrator()){let n=this.newClick
 r.default.isEmpty(n)||n(e,t)}},checkRow(e){let t=this.parentRoute
-this.router.transitionTo(t,e.id)},changeDate(e){let t=new i.default(e).format("YYYY-MM-DD HH:mm:00")
+localStorage.setItem("roomId",this.get("activeRoom.id")),localStorage.setItem("roomNumber",this.get("activeRoom.numberRoom")),this.router.transitionTo(t,e.id)},changeDate(e){let t=new i.default(e).format("YYYY-MM-DD HH:mm:00")
 this.updateData(t)},changeRoom(e){this.set("activeRoom",e)
 let t=this.scheduleData,n=this.employees,r=this.date
 this.constructionData(t,n,r)}}}))
@@ -385,7 +385,9 @@ const t=await e.get("roomOnWorkshift")
 return await e.get("house").then((function(t){e.house=t})),await Promise.all(await t.map((async t=>{await t.get("room").then((function(e){t.set("room",e)}))
 let n=t.get("employeeOnWorkshift")
 n.map((t=>{t.get("employee").then((function(r){t.set("employee",r),e.reload(),n.reload(),r.get("user").then((function(e){r.set("user",e)}))})),t.get("account").then((function(e){t.set("account",e)}))}))}))),e},setupController(e,t){let n=Ember.isEmpty(t.get("timeend"))&&!this.roleOnlyManager()
-t.reload(),e.set("onlyread",n),n||e._getPenaltyAll(t),Ember.isEmpty(e.get("room"))?(e.set("currentRoom",t.get("roomOnWorkshift").firstObject.get("room.numberRoom")),e.set("room",t.get("roomOnWorkshift").firstObject.get("room.id"))):e.set("currentRoom",t.get("roomOnWorkshift").filter((t=>t.get("room.id")==e.get("room"))).firstObject.get("room.numberRoom")),this._super(...arguments)}})
+t.reload(),e.set("onlyread",n),n||e._getPenaltyAll(t)
+var r=localStorage.getItem("roomId"),o=localStorage.getItem("roomNumber")
+Ember.isEmpty(r)||Ember.isEmpty(o)?Ember.isEmpty(e.get("room"))?(e.set("currentRoom",t.get("roomOnWorkshift").firstObject.get("room.numberRoom")),e.set("room",t.get("roomOnWorkshift").firstObject.get("room.id"))):e.set("currentRoom",t.get("roomOnWorkshift").filter((t=>t.get("room.id")==e.get("room"))).firstObject.get("room.numberRoom")):(e.set("currentRoom",o),e.set("room",r)),this._super(...arguments)}})
 e.default=r})),define("sbilling-front/routes/workshifts-administrator",["exports","sbilling-front/routes/base-route","@ember/service","sbilling-front/config/environment","moment"],(function(e,t,n,r,o){Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0
 var l=t.default.extend({routeTitle:"Список смен",store:(0,n.inject)("store"),session:(0,n.inject)("session"),queryParams:{room:null,date:null},model(e){let t=this
 if(Ember.isEmpty(t.get("session.data.authenticated.workplace")))return null
