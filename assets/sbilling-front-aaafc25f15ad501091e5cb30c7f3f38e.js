@@ -186,9 +186,9 @@ let n=this,r=new o.default
 this.store.findRecord("employee",n.get("session.data.authenticated.employee")).then((function(o){n.store.createRecord("petition",{type:e,message:t,date:r,status:"Отправлено",actuality:1,workshift:null,employee:o}).save().then((function(){n.reload(),n.set("typePetition",void 0),n.set("commentPetition",void 0),n.set("modalOpenNewPetition",!1),M.toast({html:"Сообщение успешно отправлено"})}))}))},deletePetition(e){let t=this
 Ember.getOwner(this).lookup("controller:application").confirm("Удалить обращение","Вы действительно хотите удалить обращение?",(function(){e.deleteRecord(),e.save().then((function(){t.reload(),M.toast({html:"Обращение успешно удалено"})}))}))}}})
 e.default=l})),define("sbilling-front/controllers/model-transactions",["exports","sbilling-front/controllers/base-controller","sbilling-front/config/environment","@ember/service"],(function(e,t,n,r){Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0
-var o=t.default.extend({session:(0,r.inject)("session"),routing:(0,r.inject)("-routing"),modelMeta:void 0,search:void 0,searchObserver:Ember.observer("search",(function(){this._search()})),_search(){this.search
+var o=t.default.extend({session:(0,r.inject)("session"),routing:(0,r.inject)("-routing"),modelMeta:void 0,search:void 0,searchObserver:Ember.observer("search",(function(){this._search()})),modelObserver:Ember.observer("model",(function(){this._search()})),_search(){this.search
 var e
-e=this.model,this.set("modelMeta",e)},actions:{toWorkshift(e){this.transitionToRoute("workshift-administrator",e)}}})
+e=(e=this.model).sort((function(e,t){return new Date(t.workshift.timestart)-new Date(e.workshift.timestart)})),this.set("modelMeta",e)},actions:{toWorkshift(e){this.transitionToRoute("workshift-administrator",e)}}})
 e.default=o})),define("sbilling-front/controllers/production-employee",["exports","sbilling-front/controllers/base-controller","sbilling-front/config/environment","@ember/service"],(function(e,t,n,r){Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0
 var o=t.default.extend({session:(0,r.inject)("session"),routing:(0,r.inject)("-routing"),modelMeta:void 0,search:void 0,searchObserver:Ember.observer("search",(function(){this._search()})),_search(){let e=this.search
 var t=this.model.filter((t=>-1!=t.employee.fio.indexOf(e)))
